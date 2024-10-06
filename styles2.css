@@ -1,0 +1,61 @@
+body {
+    background-color: #000;
+    background-image: radial-gradient(white 1px, transparent 1px), 
+                      radial-gradient(white 1px, transparent 1px),
+                      radial-gradient(white 1px, transparent 1px), 
+                      radial-gradient(white 1px, transparent 1px);
+    background-size: 200px 200px, 300px 300px, 400px 400px, 500px 500px;
+    background-position: 0 0, 150px 150px, 100px 200px, 200px 100px;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 50px 0;
+}
+
+h1 {
+    font-size: 3em;
+    color: #00FFFF;
+    text-shadow: 0 0 10px #00FFFF;
+    margin-bottom: 50px;
+}
+
+.planet-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.planet-card {
+    background-color: rgba(0, 0, 0, 0.8);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.8);
+    transition: transform 0.3s, box-shadow 0.3s;
+    text-align: center;
+}
+
+.planet-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 0 30px rgba(0, 255, 255, 1);
+}
+
+.planet-image {
+    max-width: 150px;
+    height: auto;
+    border-radius: 50%;
+    box-shadow: 0 0 15px #00FFFF;
+}
+
+h2 {
+    font-size: 1.5em;
+    color: #FFD700;
+    margin-top: 10px;
+    text-shadow: 0 0 10px #FFD700;
+}
+
+a {
+    text-decoration: none;
+}

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GJ 1214 b</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            overflow: auto; /* Prevent scrolling */
+        }
+        h1 {
+            font-size: 2.5em;
+            margin: 20px 0;
+        }
+        #heroImage {
+            width: 200px;
+            margin: 20px;
+        }
+        #facts {
+            margin: 20px;
+            font-size: 1.2em;
+        }
+        #heroIntro {
+            font-size: 1.5em;
+            margin: 20px;
+        }
+        #question {
+            font-size: 1.5em;
+            margin: 20px;
+        }
+        #options button {
+            display: block;
+            margin: 10px auto;
+            padding: 10px 20px;
+            font-size: 1em;
+            background-color: #444;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        #options button:hover {
+            background-color: #666;
+        }
+        #villainImage {
+            margin: 20px;
+            width: 200px;
+        }
+        #fact {
+            margin: 20px;
+            font-size: 1em;
+        }
+        #lifespanDisplay {
+            margin: 20px;
+            font-size: 1.2em;
+        }
+        #lifespanBar {
+            width: 100%;
+            background-color: #444;
+            border: 1px solid #fff;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        #lifespanFill {
+            height: 20px;
+            background-color: red;
+            width: 100%; /* Start full, will change */
+        }
+        /* Add starry background */
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.8;
+            animation: twinkling 1.5s infinite alternate;
+        }
+        @keyframes twinkling {
+            0% {
+                opacity: 0.5;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to GJ 1214 b!</h1>
+    <img id="heroImage" src="GJ 1214 b.jpeg" alt="Superhero" />
+    <div id="heroIntro">
+        <p>Hello there, thank goodness you’re here! My name is <strong>Water Shield</strong> and I’m the protector of GJ 1214 b. I’m currently fighting against the nefarious Void Phantom, and I really need your help! Will you be the hero?</p>
+    </div>
+    <div id="facts">
+        <p><strong>Facts about GJ 1214 b:</strong></p>
+        <ul>
+            <li>GJ 1214 b is a super-Earth located about 40 light-years away from Earth.</li>
+            <li>It has a thick atmosphere, possibly containing a significant amount of water vapor.</li>
+            <li>The planet may have a surface covered in a global ocean.</li>
+            <li>GJ 1214 b was discovered in 2009 and is known for its potential habitability.</li>
+        </ul>
+    </div>
+    <div id="lifespanDisplay">
+        Villain's Lifespan: <span id="lifespanValue">100</span>
+        <div id="lifespanBar">
+            <div id="lifespanFill" style="width: 100%;"></div>
+        </div>
+    </div>
+    <div id="question"></div>
+    <div id="options"></div>
+    <img id="villainImage" src="villainhappy.jpeg" alt="Villain Happy" />
+    <div id="fact"></div>
+
+    <script>
+        let currentQuestionIndex = 0;
+        let villainLifespan = 100; // Represents the villain's lifespan
+        const questions = [
+            {
+                question: "What is the distance of GJ 1214 b from Earth?",
+                answers: [
+                    { text: "40 light-years", correct: true },
+                    { text: "30 light-years", correct: false },
+                    { text: "50 light-years", correct: false },
+                ],
+                fact: "GJ 1214 b is located about 40 light-years away from Earth."
+            },
+            {
+                question: "What type of planet is GJ 1214 b?",
+                answers: [
+                    { text: "Super-Earth", correct: true },
+                    { text: "Hot Jupiter", correct: false },
+                    { text: "Gas Giant", correct: false },
+                ],
+                fact: "GJ 1214 b is classified as a super-Earth."
+            },
+            {
+                question: "What is unique about GJ 1214 b's atmosphere?",
+                answers: [
+                    { text: "It has a thin atmosphere", correct: false },
+                    { text: "It has a thick atmosphere", correct: true },
+                    { text: "It has no atmosphere", correct: false },
+                ],
+                fact: "GJ 1214 b has a thick atmosphere, possibly containing water vapor."
+            },
+            {
+                question: "What could be on the surface of GJ 1214 b?",
+                answers: [
+                    { text: "A desert", correct: false },
+                    { text: "A global ocean", correct: true },
+                    { text: "Ice caps", correct: false },
+                ],
+                fact: "The planet may have a surface covered in a global ocean."
+            },
+            {
+                question: "In which year was GJ 1214 b discovered?",
+                answers: [
+                    { text: "2009", correct: true },
+                    { text: "2010", correct: false },
+                    { text: "2008", correct: false },
+                ],
+                fact: "GJ 1214 b was discovered in 2009."
+            }
+        ];
+
+        const questionElement = document.getElementById("question");
+        const optionsElement = document.getElementById("options");
+        const villainImage = document.getElementById("villainImage");
+        const factElement = document.getElementById("fact");
+        const lifespanValueElement = document.getElementById("lifespanValue");
+        const lifespanFillElement = document.getElementById("lifespanFill");
+
+        function showQuestion() {
+            const currentQuestion = questions[currentQuestionIndex];
+            questionElement.innerText = currentQuestion.question;
+            optionsElement.innerHTML = ""; // Clear previous options
+
+            currentQuestion.answers.forEach((answer) => {
+                const button = document.createElement("button");
+                button.innerText = answer.text;
+                button.onclick = () => checkAnswer(answer.correct);
+                optionsElement.appendChild(button);
+            });
+
+            // Update villain image based on initial state
+            villainImage.src = "villainhappy.jpeg"; // Villain starts happy
+        }
+
+        function checkAnswer(isCorrect) {
+            if (isCorrect) {
+                // Correct answer logic
+                villainLifespan -= 10; // Decrease villain's lifespan
+                villainImage.src = "villainsad.jpg"; // Show sad villain
+                factElement.innerText = questions[currentQuestionIndex].fact; // Show fact about the planet
+            } else {
+                // Incorrect answer logic
+                villainLifespan += 10; // Increase villain's lifespan
+                villainImage.src = "villainhappy.jpeg"; // Show happy villain
+                factElement.innerText = "Incorrect! Try again.";
+            }
+
+            // Update villain lifespan display
+            updateVillainLifespan();
+
+            // Check if the villain is defeated or not
+            if (villainLifespan <= 0) {
+                alert("You defeated the villain! Congratulations!");
+                // You can redirect or reset the game here
+            } else if (villainLifespan >= 200) {
+                alert("The villain is too strong! Try answering the questions correctly.");
+            } else {
+                // Move to the next question if there's still time
+                currentQuestionIndex = (currentQuestionIndex + 1) % questions.length; // Cycle through questions
+                showQuestion();
+            }
+        }
+
+        function updateVillainLifespan() {
+            // Update the lifespan display
+            lifespanValueElement.innerText = villainLifespan;
+            const lifespanPercentage = Math.max(0, Math.min(100, (villainLifespan / 100) * 100)); // Keep within 0-100%
+            lifespanFillElement.style.width = `${lifespanPercentage}%`;
+            lifespanFillElement.style.backgroundColor = villainLifespan > 50 ? "green" : "red"; // Change color based on lifespan
+        }
+
+        // Initialize the game
+        showQuestion();
+
+        // Create a starry background
+        function createStars(numStars) {
+            for (let i = 0; i < numStars; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.width = Math.random() * 3 + 'px'; // Random width for stars
+                star.style.height = star.style.width; // Make them round
+                star.style.top = Math.random() * 100 + 'vh'; // Random position
+                star.style.left = Math.random() * 100 + 'vw'; // Random position
+                document.body.appendChild(star);
+            }
+        }
+        createStars(100); // Create 100 stars
+    </script>
+</body>
+</html>
